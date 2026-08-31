@@ -86,16 +86,16 @@ const closingText = (value) => {
   const raw = String(value || "").slice(0, 5);
   const [hour, minute] = raw.split(":").map(Number);
   const minutes = hour * 60 + minute;
-  return Number.isFinite(minutes) && minutes <= 21 * 60
+  return Number.isFinite(minutes) && minutes <= 23 * 60
     ? clockText(value)
-    : "9:00 PM";
+    : "11:00 PM";
 };
 const closingInputValue = (value) => {
-  const raw = String(value || "21:00").slice(0, 5);
+  const raw = String(value || "23:00").slice(0, 5);
   const [hour, minute] = raw.split(":").map(Number);
-  return Number.isFinite(hour * 60 + minute) && hour * 60 + minute <= 21 * 60
+  return Number.isFinite(hour * 60 + minute) && hour * 60 + minute <= 23 * 60
     ? raw
-    : "21:00";
+    : "23:00";
 };
 const localDate = (date = new Date()) => {
   const year = date.getFullYear();
@@ -420,19 +420,19 @@ function courtCard(event, index = state.events.indexOf(event)) {
     {
       surface: "Sport Court",
       type: "Indoor",
-       hours: "8:00 AM–9:00 PM",
+       hours: "8:00 AM–11:00 PM",
       amenities: ["Parking", "Restrooms", "Lights"],
     },
     {
       surface: "Pickleball Court",
       type: "Outdoor",
-       hours: "7:00 AM–9:00 PM",
+       hours: "7:00 AM–11:00 PM",
       amenities: ["Seating", "Lights", "Parking"],
     },
     {
       surface: "Sport Court",
       type: "Indoor",
-       hours: "6:00 AM–9:00 PM",
+       hours: "6:00 AM–11:00 PM",
       amenities: ["Restrooms", "Food & coffee", "Lights"],
     },
   ][Math.abs(index) % 3];
@@ -446,7 +446,7 @@ function courtCard(event, index = state.events.indexOf(event)) {
     : meta.hours.split("–")[0];
   const closing = event.closing_time
     ? closingText(event.closing_time)
-    : "9:00 PM";
+    : "11:00 PM";
   const image = event.image_url
     ? `<img src="${esc(event.image_url)}" alt="${esc(event.name)} court" loading="lazy">`
     : "";
@@ -979,7 +979,7 @@ function showCourtModal(event = null) {
     <label>Location<input required name="location" value="${esc(event?.location || "")}" placeholder="Mati, Davao Oriental"></label>
     <label>Contact number<input required name="contact" value="${esc(event?.contact || "")}" placeholder="09XXXXXXXXX"></label>
     <label>Opening time<input required type="time" name="openingTime" value="${esc(event?.opening_time?.slice(0, 5) || "07:00")}"></label>
-    <label>Closing time<input required type="time" name="closingTime" value="${esc(closingInputValue(event?.closing_time))}" max="21:00"><small class="field-hint">Bookings end at 9:00 PM.</small></label>
+    <label>Closing time<input required type="time" name="closingTime" value="${esc(closingInputValue(event?.closing_time))}" max="23:00"><small class="field-hint">Bookings end at 11:00 PM.</small></label>
     <label class="full-width">Amenities<input name="amenities" value="${esc(amenities)}" placeholder="Lights, Restrooms, Parking, Pickleball Court, Food & Coffee"></label>
     <label>Maximum players<input required type="number" min="1" name="maxParticipants" value="${event?.max_participants || 20}"></label>
      <label>Default booking fee<input required type="number" min="1" step="0.01" name="fee" value="${event?.fee || rulePrice(0)}"></label>
