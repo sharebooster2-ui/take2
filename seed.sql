@@ -1,0 +1,1 @@
+-- The application seeds demo users and events on first boot.

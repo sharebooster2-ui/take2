@@ -1,0 +1,488 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="PickleBalls pickleball registration" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <title>PickleBalls — Pickleball, together</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <!-- Temporary messages shown to the user -->
+    <div id="toast-stack" class="toast-stack"></div>
+
+    <!-- Login and account creation screens -->
+    <section id="auth-view" class="auth-view">
+      <button
+        class="auth-menu-trigger"
+        id="auth-menu-toggle"
+        aria-controls="auth-side-menu"
+        aria-expanded="false"
+      >
+        <span class="menu-glyph">☰</span>
+        <span>Access menu</span>
+      </button>
+      <div class="auth-menu-backdrop" id="auth-menu-backdrop"></div>
+      <aside
+        class="auth-side-menu"
+        id="auth-side-menu"
+        aria-label="Account access menu"
+      >
+        <div class="auth-side-menu-header">
+          <div>
+            <p class="eyebrow">PICKLEBALLS ACCESS</p>
+            <h2>Choose your portal</h2>
+          </div>
+          <button
+            class="auth-menu-close"
+            id="auth-menu-close"
+            aria-label="Close access menu"
+          >
+            ×
+          </button>
+        </div>
+        <div class="auth-menu-group">
+          <p class="auth-menu-label">Admin access</p>
+          <button class="auth-menu-item admin" data-auth-tab="admin">
+            <span>▣</span>
+            <div>
+              <strong>Admin panel login</strong
+              ><small>For approved club administrators</small>
+            </div>
+          </button>
+          <button class="auth-menu-item admin" data-auth-tab="admin-register">
+            <span>＋</span>
+            <div>
+              <strong>Admin registration</strong
+              ><small>Request administrator access</small>
+            </div>
+          </button>
+        </div>
+      </aside>
+      <div class="auth-visual">
+        <div class="brand-mark large"><span>P</span></div>
+        <p class="eyebrow light">PLAY MORE. RALLY FURTHER.</p>
+        <h1>Find your people<br /><em>on court.</em></h1>
+        <p class="auth-copy">
+          PickleBalls makes it easy to discover local games, save your spot, and
+          stay in the loop.
+        </p>
+        <div class="court-art" aria-hidden="true">
+          <div class="net"></div>
+          <div class="paddle paddle-one"></div>
+          <div class="paddle paddle-two"></div>
+          <div class="ball"></div>
+        </div>
+        <div class="auth-footnote">
+          <span class="live-dot"></span>
+          <span id="player-count">0 players</span> are rallying this month
+        </div>
+      </div>
+      <div class="auth-card-wrap">
+        <div class="auth-card">
+          <div class="auth-mobile-brand">
+            <div class="brand-mark"><span>P</span></div>
+            <strong>PickleBalls</strong>
+          </div>
+          <div class="auth-tabs">
+            <button class="auth-tab active" data-auth-tab="login">
+              Sign in</button
+            ><button class="auth-tab" data-auth-tab="register">
+              Create account
+            </button>
+          </div>
+          <div id="login-panel" class="auth-panel active">
+            <p class="eyebrow">WELCOME BACK</p>
+            <h2>Good to see you.</h2>
+            <p class="muted">Sign in to manage your next rally.</p>
+            <form id="login-form" class="stack-form" method="post" action="/api/auth/login">
+              <label
+                >Email address<input
+                  required
+                  autocomplete="email"
+                  type="email"
+                  name="email"
+                  placeholder="richard094@gmail.com"
+              /></label>
+              <label
+                >Password<span class="password-control"
+                  ><input
+                    required
+                    autocomplete="current-password"
+                    type="password"
+                    name="password"
+                    placeholder="••••••••"
+                  /><button
+                    class="password-toggle"
+                    type="button"
+                    data-password-toggle
+                    aria-label="Show password"
+                  >
+                    Show
+                  </button></span
+                ></label
+              >
+              <button class="button primary full" type="submit">
+                Sign in <span>↗</span>
+              </button>
+            </form>
+            <button
+              class="button ghost small auth-link"
+              type="button"
+              data-auth-tab="forgot"
+            >
+              Forgot password?
+            </button>
+            <p class="demo-hint">
+              Need admin access? Open the <strong>Access menu</strong>.
+            </p>
+          </div>
+          <div id="register-panel" class="auth-panel">
+            <p class="eyebrow">JOIN THE RALLY</p>
+            <h2>Let’s get you on court.</h2>
+            <p class="muted">Create your account in less than a minute.</p>
+            <form id="register-form" class="stack-form" method="post" action="/api/auth/register">
+              <label
+                >Full name<input
+                  required
+                  autocomplete="name"
+                  type="text"
+                  name="fullName"
+                  placeholder="Richard Ryan Sison"
+              /></label>
+              <label
+                >Phone number<input
+                  required
+                  autocomplete="tel"
+                  inputmode="tel"
+                  type="tel"
+                  name="phone"
+                  placeholder="09xx xxx xxxx"
+              /></label>
+              <label
+                >Email address<input
+                  required
+                  autocomplete="email"
+                  type="email"
+                  name="email"
+                  placeholder="richard094@gmail.com"
+              /></label>
+              <label
+                >Password<span class="password-control"
+                  ><input
+                    required
+                    autocomplete="new-password"
+                    minlength="8"
+                    type="password"
+                    name="password"
+                    placeholder="8+ characters"
+                  /><button
+                    class="password-toggle"
+                    type="button"
+                    data-password-toggle
+                    aria-label="Show password"
+                  >
+                    Show
+                  </button></span
+                ></label
+              >
+              <button class="button primary full" type="submit">
+                Create account <span>↗</span>
+              </button>
+            </form>
+          </div>
+          <div id="admin-panel" class="auth-panel">
+            <p class="eyebrow">ADMIN ACCESS</p>
+            <h2>Run the club.</h2>
+            <p class="muted">
+              Sign in to manage events, payments, members, and schedules.
+            </p>
+            <form id="admin-login-form" class="stack-form" method="post" action="/api/auth/admin-login">
+              <label
+                >Admin email<input
+                  required
+                  autocomplete="email"
+                  type="email"
+                  name="email"
+                  placeholder="richard094@gmail.com"
+              /></label>
+              <label
+                >Password<span class="password-control"
+                  ><input
+                    required
+                    autocomplete="current-password"
+                    type="password"
+                    name="password"
+                    placeholder="••••••••"
+                  /><button
+                    class="password-toggle"
+                    type="button"
+                    data-password-toggle
+                    aria-label="Show password"
+                  >
+                    Show
+                  </button></span
+                ></label
+              >
+              <button class="button primary full" type="submit">
+                Open admin panel <span>↗</span>
+              </button>
+            </form>
+            <button
+              class="button ghost small auth-link back-to-login"
+              type="button"
+              data-auth-tab="login"
+            >
+              ← Back to user login
+            </button>
+            <p class="demo-hint">
+              This portal is only for approved administrators.
+            </p>
+          </div>
+          <div id="forgot-panel" class="auth-panel">
+            <p class="eyebrow">ACCOUNT RECOVERY</p>
+            <h2>Reset your password.</h2>
+            <p class="muted">
+              Enter your email and we’ll send a secure reset link.
+            </p>
+            <form id="forgot-form" class="stack-form" method="post" action="/api/auth/forgot-password">
+              <label
+                >Email address<input
+                  required
+                  autocomplete="email"
+                  type="email"
+                  name="email"
+                  placeholder="richard094@gmail.com"
+              /></label>
+              <button class="button primary full" type="submit">
+                Send reset link <span>↗</span>
+              </button>
+            </form>
+            <button
+              class="button ghost small auth-link back-to-login"
+              type="button"
+              data-auth-tab="login"
+            >
+              ← Back to sign in
+            </button>
+          </div>
+          <div id="reset-panel" class="auth-panel">
+            <p class="eyebrow">NEW PASSWORD</p>
+            <h2>Choose a new password.</h2>
+            <p class="muted">
+              Use at least 8 characters. The link can only be used once.
+            </p>
+            <form id="reset-form" class="stack-form" method="post" action="/api/auth/reset-password">
+              <input type="hidden" name="token" id="reset-token" />
+              <label
+                >New password<span class="password-control"
+                  ><input
+                    required
+                    autocomplete="new-password"
+                    minlength="8"
+                    type="password"
+                    name="password"
+                    placeholder="8+ characters"
+                  /><button
+                    class="password-toggle"
+                    type="button"
+                    data-password-toggle
+                    aria-label="Show password"
+                  >
+                    Show
+                  </button></span
+                ></label
+              >
+              <label
+                >Confirm password<span class="password-control"
+                  ><input
+                    required
+                    autocomplete="new-password"
+                    minlength="8"
+                    type="password"
+                    name="confirmPassword"
+                    placeholder="Repeat your password"
+                  /><button
+                    class="password-toggle"
+                    type="button"
+                    data-password-toggle
+                    aria-label="Show password"
+                  >
+                    Show
+                  </button></span
+                ></label
+              >
+              <button class="button primary full" type="submit">
+                Update password <span>↗</span>
+              </button>
+            </form>
+            <button
+              class="button ghost small auth-link back-to-login"
+              type="button"
+              data-auth-tab="login"
+            >
+              ← Back to sign in
+            </button>
+          </div>
+          <div id="admin-register-panel" class="auth-panel">
+            <p class="eyebrow">ADMIN REGISTRATION</p>
+            <h2>Request admin access.</h2>
+            <p class="muted">Submit your details for administrator approval.</p>
+            <form id="admin-register-form" class="stack-form" method="post" action="/api/auth/admin-register">
+              <label
+                >Full name<input
+                  required
+                  autocomplete="name"
+                  type="text"
+                  name="fullName"
+                  placeholder="Richard Ryan Sison"
+              /></label>
+              <label
+                >Email address<input
+                  required
+                  autocomplete="email"
+                  type="email"
+                  name="email"
+                  placeholder="richard094@gmail.com"
+              /></label>
+              <label
+                >Password<span class="password-control"
+                  ><input
+                    required
+                    autocomplete="new-password"
+                    minlength="8"
+                    type="password"
+                    name="password"
+                    placeholder="8+ characters"
+                  /><button
+                    class="password-toggle"
+                    type="button"
+                    data-password-toggle
+                    aria-label="Show password"
+                  >
+                    Show
+                  </button></span
+                ></label
+              >
+              <button class="button primary full" type="submit">
+                Request admin access <span>↗</span>
+              </button>
+            </form>
+            <button
+              class="button ghost small auth-link back-to-login"
+              type="button"
+              data-auth-tab="login"
+            >
+              ← Back to user login
+            </button>
+            <p class="demo-hint">
+              Requests after the first admin require super admin approval.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main application area shown after login -->
+    <section id="app-view" class="app-view hidden">
+      <aside class="sidebar">
+        <div class="sidebar-top">
+          <div class="brand">
+            <div class="brand-mark"><span>P</span></div>
+            <div>
+              <strong>PickleBalls</strong><small>Pickleball club</small>
+            </div>
+          </div>
+          <button
+            class="close-sidebar"
+            id="close-sidebar"
+            aria-label="Close navigation"
+          >
+            ×
+          </button>
+        </div>
+        <div class="profile-mini">
+          <div class="avatar" id="sidebar-avatar">MS</div>
+          <div>
+            <strong id="sidebar-name">Mia Santos</strong
+            ><span id="sidebar-role">Member</span>
+          </div>
+          <button id="open-profile" aria-label="Open profile">⋮</button>
+        </div>
+        <nav class="main-nav">
+          <p class="nav-label">Workspace</p>
+          <button class="nav-item active" data-page="dashboard">
+            <span class="nav-icon">⌂</span> Dashboard
+          </button>
+          <button class="nav-item" data-page="profile">
+            <span class="nav-icon">◎</span> My Profile
+          </button>
+          <button class="nav-item" data-page="events">
+            <span class="nav-icon">✦</span> Courts
+            <span class="nav-count" id="event-count">0</span>
+          </button>
+          <button class="nav-item" data-page="registrations">
+            <span class="nav-icon">▤</span> My Registrations
+          </button>
+          <button class="nav-item" id="schedule-nav" data-page="schedule">
+            <span class="nav-icon">◷</span> My Schedule
+          </button>
+          <button class="nav-item" data-page="payments">
+            <span class="nav-icon">₱</span> Payments
+          </button>
+          <button class="nav-item" data-page="payment-history">
+            <span class="nav-icon">◷</span> Payment History
+          </button>
+          <button class="nav-item" data-page="notifications">
+            <span class="nav-icon">◌</span> Notifications
+            <span class="nav-count orange" id="notification-count">0</span>
+          </button>
+          <button class="nav-item hidden" id="admin-nav" data-page="admin">
+            <span class="nav-icon">▣</span> Admin console
+          </button>
+          <p class="nav-label second">Account</p>
+          <button class="nav-item" data-page="settings">
+            <span class="nav-icon">⚙</span> Settings
+          </button>
+        </nav>
+        <div class="sidebar-bottom">
+          <button class="help-card" id="support-desk-button" type="button">
+            <span class="help-icon">?</span
+            ><span class="help-copy"
+              ><strong>Need a hand?</strong
+              ><small>Visit our support desk</small></span
+            ><span class="help-arrow">↗</span></button
+          ><button class="logout-button" id="logout-button">
+            <span>↪</span> Log out
+          </button>
+        </div>
+      </aside>
+      <main class="main-content">
+        <header class="topbar">
+          <button class="menu-toggle" id="menu-toggle">☰</button>
+          <div class="breadcrumb">
+            <span>PickleBalls</span><b>/</b
+            ><strong id="breadcrumb-title">Dashboard</strong>
+          </div>
+          <div class="top-actions">
+            <button
+              class="icon-button notification-trigger"
+              data-page="notifications"
+            >
+              ◌<span
+                class="notification-badge hidden"
+                id="top-notification-badge"
+              ></span>
+            </button>
+            <div class="top-avatar" id="top-avatar">MS</div>
+          </div>
+        </header>
+        <div id="page-container"></div>
+      </main>
+    </section>
+    
+    <div id="modal-root"></div>
+    <script src="/app.js"></script>
+  </body>
+</html>
