@@ -44,6 +44,15 @@ const dateText = (
   date,
   options = { month: "short", day: "numeric", year: "numeric" },
 ) => new Date(date).toLocaleDateString("en-PH", options);
+const todayLabel = (date = new Date()) =>
+  date
+    .toLocaleDateString("en-PH", {
+      weekday: "long",
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+    })
+    .toUpperCase();
 const dateInput = (date) => new Date(date).toISOString().slice(0, 10);
 const statusPill = (status) =>
   `<span class="pill ${esc(status)}">${esc(status)}</span>`;
@@ -374,7 +383,7 @@ async function renderDashboard() {
     !dashboard.unreadNotifications,
   );
   $("#page-container").innerHTML = `<div class="page">
-    <div class="page-heading"><div><p class="eyebrow">SUNDAY, AUGUST 30, 2026</p><h1>Good morning, ${esc((state.user.full_name || state.user.fullName || "player").split(" ")[0])}.</h1><p>Find an open court and reserve your next game.</p></div><div class="heading-actions"><span class="date-chip">◷ This week</span><button class="button lime small" data-page="events">Find a court ↗</button></div></div>
+    <div class="page-heading"><div><p class="eyebrow">${todayLabel()}</p><h1>Good morning, ${esc((state.user.full_name || state.user.fullName || "player").split(" ")[0])}.</h1><p>Find an open court and reserve your next game.</p></div><div class="heading-actions"><span class="date-chip">◷ This week</span><button class="button lime small" data-page="events">Find a court ↗</button></div></div>
     <div class="stats-grid"><div class="stat-card"><div class="stat-top"><span>My registrations</span><span class="stat-icon">▤</span></div><div class="stat-value">${dashboard.registrations}</div><div class="stat-help"><strong>Active</strong> events on your calendar</div></div>
       <div class="stat-card"><div class="stat-top"><span>Verified payments</span><span class="stat-icon">₱</span></div><div class="stat-value">${dashboard.verifiedPayments}</div><div class="stat-help">Keep your spots confirmed</div></div>
       <div class="stat-card"><div class="stat-top"><span>Unread updates</span><span class="stat-icon">◌</span></div><div class="stat-value">${dashboard.unreadNotifications}</div><div class="stat-help">From PickleBalls admins</div></div></div>
